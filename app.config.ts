@@ -1,4 +1,6 @@
-// app.config.ts
+import react from '@vitejs/plugin-react'
 import { defineConfig } from '@tanstack/start/config'
 
-export default defineConfig({})
+export default defineConfig({
+    
+})

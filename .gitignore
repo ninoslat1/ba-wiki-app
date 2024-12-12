@@ -1,1 +1,3 @@
 /node_modules
+app.config.timestamp_*
+count.txt
