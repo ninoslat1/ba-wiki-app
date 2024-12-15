@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { getCharacterData } from '../../functions/server'
 
@@ -13,12 +13,14 @@ export const Route = createFileRoute('/character/')({
 })
 
 function Home() {
-  const router = useRouter()
   const state = Route.useLoaderData()
+  const filteredState = state.filter(
+    (data) => !data.name.includes('(')
+  );
 
   return (
     <div className="grid grid-cols-6 gap-10">
-      {state.map((data) => (
+      {filteredState.map((data) => (
         <div className="card card-image-cover" key={data.id}>
           <div className="card-body">
             <h2 className="card-header">{data.name}</h2>
