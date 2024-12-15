@@ -1,15 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/start'
 import { getCharacterData } from '../../functions/server'
-
-const characterData = createServerFn({ method: 'GET' }).handler(async () => {
-  const data = await getCharacterData()
-  return data
-})
 
 export const Route = createFileRoute('/character/')({
   component: Home,
-  loader: async () => await characterData(),
+  loader: async () => await getCharacterData(),
 })
 
 function Home() {
