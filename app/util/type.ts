@@ -25,7 +25,7 @@ export type TCharacter = {
     terrain: TTerrain
 }
 
-type TDetailCharacter = {
+export type TDetailCharacter = {
     _id: string
     name: string
     school: string

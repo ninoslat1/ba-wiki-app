@@ -5,7 +5,8 @@ import { NotFound } from './components/NotFound'
 export function createRouter() {
     const router = createTanStackRouter({
         routeTree,
-        defaultNotFoundComponent: NotFound
+        defaultNotFoundComponent: NotFound,
+        pathParamsAllowedCharacters: ['$']
     })
 
     return router

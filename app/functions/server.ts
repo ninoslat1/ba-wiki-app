@@ -8,9 +8,7 @@ export const getCharacterData = createServerFn({method: "GET"}).handler(async ()
     return JSON.parse(jsonData) as TCharacter[]
 })
 
-export const getCharacterDetailData = createServerFn<"GET", TDetailCharacterList>({method: 'GET'}).validator((data: string) => data).handler(async (ctx) => {
-    return `Hello, ${ctx.data}`
-    // const data = await fetch(`${process.env.BACKEND_URL}characters?name=${name}`);
-    // const response = await data.json();
-    // return response;
-  });
+export const getCharacterDetailDataFn = async (name: string): Promise<TDetailCharacterList> => {
+    const response = await fetch(`${process.env.BACKEND_URL}characters?name=${name}`);
+    return await response.json();
+};
