@@ -16,7 +16,7 @@ function Detail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://api-blue-archive.vercel.app/api/characters?name=${search}`, {
+        const response = await fetch(`${process.env.BACKEND_URL}characters?name=${search}`, {
           method: 'GET',
         });
 
