@@ -8,7 +8,7 @@ export const Route = createFileRoute('/character/character-detail/')({
 
 function Detail() {
   const [data, setData] = useState<TDetailCharacter[] | null>(null);
-  const apiUrl = process.env.BACKEND_URL
+  const apiUrl = import.meta.env.VITE_BACKEND_URL
   const search = useSearch({
     from: '/character/character-detail/',
     select: (search: TCharacter) => search.name,
