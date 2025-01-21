@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import { BiBook } from 'react-icons/bi'
+import HeroImage from '../assets/download.webp'
+import IconImage from '../assets/image.webp'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -13,7 +15,7 @@ function RouteComponent() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <Link href="/">
-              <img src="./app/assets/image.webp" alt="Logo" width={150} height={50} />
+              <img src={IconImage} alt="Logo" width={150} height={50} />
             </Link>
           </div>
         </div>
@@ -23,7 +25,7 @@ function RouteComponent() {
         <section className="relative h-screen overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src="/app/assets/download.webp"
+              src={HeroImage}
               alt="Blue Archive Hero Image"
             />
           </div>
@@ -42,7 +44,7 @@ function RouteComponent() {
                 <Link href='/character'>
                   <button className='flex flex-col gap-2 items-center justify-center max-w-3xl group'>
                       <div className="bg-[#446ab3] group-hover:bg-[#cad8f1] duration-200 text-black h-12 w-12 flex items-center justify-center rounded-full">
-                          <BiBook size={24} className="rounded-full" />
+                          <BiBook size={24} className="rounded-full text-blue-300" strokeWidth={0.5}/>
                       </div>
                       <p className="ml-2 font-bold text-xl">Character List</p>
                   </button>

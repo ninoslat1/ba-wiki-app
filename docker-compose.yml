@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  ba-wiki-app:
+    image: ba-wiki-app:latest
+    container_name: ba-wiki-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - BACKEND_URL=https://api-blue-archive.vercel.app/
+    ports:
+      - "3007:3007"
+    expose: 
+      - "3007"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always

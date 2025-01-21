@@ -8,6 +8,7 @@ export const Route = createFileRoute('/character/character-detail/')({
 
 function Detail() {
   const [data, setData] = useState<TDetailCharacter[] | null>(null);
+  const apiUrl = process.env.BACKEND_URL
   const search = useSearch({
     from: '/character/character-detail/',
     select: (search: TCharacter) => search.name,
@@ -16,7 +17,7 @@ function Detail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.BACKEND_URL}characters?name=${search}`, {
+        const response = await fetch(`${apiUrl}characters?name=${search}`, {
           method: 'GET',
         });
 

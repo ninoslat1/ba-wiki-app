@@ -2,3 +2,5 @@
 app.config.timestamp_*
 count.txt
 .env
+.output
+.vinxi

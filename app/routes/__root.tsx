@@ -6,7 +6,7 @@ import {
   import { Meta, Scripts } from '@tanstack/start'
   import type { ReactNode } from 'react'
   import css from "../styles/index.css?url"
-  
+
   export const Route = createRootRoute({
     head: () => ({
         meta: [
@@ -18,7 +18,7 @@ import {
             content: "width=device-width, initial-scale=1",
           },
           {
-            title: "TanStarter",
+            title: "Blue Archive Wiki",
           },
         ],
         links: [{ rel: "stylesheet", href: css }],
