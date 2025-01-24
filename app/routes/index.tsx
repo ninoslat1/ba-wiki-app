@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { BiBook } from 'react-icons/bi'
+import { BiBook, BiHeartCircle } from 'react-icons/bi'
 import HeroImage from '../assets/download.webp'
 import IconImage from '../assets/image.webp'
 
@@ -27,6 +27,7 @@ function RouteComponent() {
             <img
               src={HeroImage}
               alt="Blue Archive Hero Image"
+              className='object-cover min-h-screen'
             />
           </div>
           <div className="absolute inset-0 bg-black/75">
@@ -62,19 +63,12 @@ function RouteComponent() {
             </div>
           </div>
         </section>
-
-        <section id="about" className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-semibold mb-4">About Us</h2>
-            <p className="text-lg">We are a passionate team dedicated to creating amazing experiences for Blue Archive fans.</p>
-          </div>
-        </section>
       </main>
 
-    <footer className="footer footer-center p-4 bg-base-300 text-base-content">
-      <div>
-        <p>Copyright © 2023 - All rights reserved</p>
-      </div>
+    <footer className="footer footer-center p-4 text-base-content fixed 
+             inset-x-0 
+             bottom-0">
+        <p className='flex items-center gap-2'>Made with <span><BiHeartCircle/></span> by Benedict Ell Nino</p>
     </footer>
   </div>
   )
