@@ -65,7 +65,7 @@ function Home() {
           {[...Array(totalPages)].map((_, index) => (
             <button
               key={index + 1}
-              className={`btn ${page === index + 1 ? "btn-primary" : "bg-slate-800 hover:btn-primary"}`}
+              className={`btn ${page === index + 1 ? "btn-primary" : "btn-"}`}
               onClick={() => handlePageChange(index + 1)}
             >
               {index + 1}
