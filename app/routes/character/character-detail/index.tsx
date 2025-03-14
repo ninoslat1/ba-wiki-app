@@ -24,6 +24,7 @@ function Detail() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+
         const characterDetailData = await response.json();
         const regex = new RegExp(`^${search}(\\s|\\(|$)`, 'i');
         const filteredData = characterDetailData.data.filter((character) =>
