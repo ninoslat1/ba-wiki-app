@@ -12,7 +12,7 @@ export const Route = createFileRoute('/character/')({
 })
 
 function Home() {
-  const items = 10
+  const items = 12
   const state = Route.useLoaderData()
   const filteredState = state.filter((data) => !data.name.includes('('));
   const [page, setPage] = useState(1)
@@ -30,7 +30,7 @@ function Home() {
   return (
     <>
       <div className="flex flex-col min-h-screen">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-6 p-4 flex-grow">
+        <div className="grid gap-6 auto-rows-auto grid-cols-[repeat(auto-fill,minmax(200px,1fr))] p-4 flex-grow">
           {currentData.map((data) => (
             <Card key={data.id} className="h-80 flex flex-col justify-between shadow-lg">
               <CardHeader>
@@ -61,7 +61,8 @@ function Home() {
         <Pagination className="flex justify-center gap-2 mt-4 p-4">
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious 
+              <PaginationPrevious
+                 
                 href="#" 
                 onClick={(e) => {
                   e.preventDefault()
@@ -74,6 +75,7 @@ function Home() {
             {[...Array(totalPages)].map((_, index) => (
               <PaginationItem key={index + 1}>
                 <PaginationLink 
+                  className='hover:cursor-pointer'
                   isActive={page === index + 1} 
                   onClick={() => handlePageChange(index + 1)}
                 >
@@ -84,6 +86,7 @@ function Home() {
 
             <PaginationItem>
               <PaginationNext 
+              
                 href="#" 
                 onClick={(e) => {
                   e.preventDefault()
