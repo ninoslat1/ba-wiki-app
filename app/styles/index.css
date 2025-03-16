@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
@@ -76,6 +77,11 @@
 }
 
 @theme inline {
+  --color-explosive: #a60c18;
+  --color-piercing: #b26d1f;
+  --color-mystic: #216f9c;
+  --color-sonic: #9431a5;
+  --font-fira: "Fira Code", "sans-serif";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

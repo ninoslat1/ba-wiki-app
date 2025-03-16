@@ -1,44 +1,40 @@
 import { createFileRoute, useSearch } from '@tanstack/react-router';
 import { TCharacter, TDetailCharacter } from '../../../util/type';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/character/character-detail/')({
   component: Detail,
 });
 
 function Detail() {
-  const [data, setData] = useState<TDetailCharacter[] | null>(null);
   const apiUrl = import.meta.env.VITE_BACKEND_URL
   const search = useSearch({
     from: '/character/character-detail/',
     select: (search: TCharacter) => search.name,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${apiUrl}characters?name=${search}`, {
-          method: 'GET',
-        });
+  const { data } = useQuery({
+    queryKey: ['characters', search],
+    queryFn: async () => {
+      const response = await fetch(`${apiUrl}characters?name=${search}`, {
+        method: 'GET',
+      });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const characterDetailData = await response.json();
-        const regex = new RegExp(`^${search}(\\s|\\(|$)`, 'i');
-        const filteredData = characterDetailData.data.filter((character) =>
-          regex.test(character.name)
-        );
-
-        setData(filteredData);
-      } catch (error) {
-        console.error('Error fetching character details:', error);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
 
-    fetchData();
-  }, [search]);
+      const characterDetailData = await response.json();
+      const regex = new RegExp(`^${search}(\\s|\\(|$)`, 'i');
+      const filteredData = characterDetailData.data.filter((character) =>
+        regex.test(character.name)
+      );
+
+      return filteredData;
+    },
+    staleTime: 1000 * 60 * 60 * 24 * 90, // 3 bulan dalam milidetik
+    enabled: search !== '', // Hanya jalankan query jika search tidak kosong
+  });
 
   return (
     <div>

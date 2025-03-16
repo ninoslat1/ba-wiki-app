@@ -5,6 +5,9 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination'
+import ExplosiveIcon from '@/components/icons/attack/ExplosiveIcon'
+import BulletType from '@/components/templates/BulletType'
+import ArmorType from '@/components/templates/ArmorType'
 
 export const Route = createFileRoute('/character/')({
   component: Home,
@@ -12,7 +15,7 @@ export const Route = createFileRoute('/character/')({
 })
 
 function Home() {
-  const items = 12
+  const items = 14
   const state = Route.useLoaderData()
   const filteredState = state.filter((data) => !data.name.includes('('));
   const [page, setPage] = useState(1)
@@ -35,7 +38,10 @@ function Home() {
             <Card key={data.id} className="h-80 flex flex-col justify-between shadow-lg">
               <CardHeader>
                 <CardTitle>{data.name}</CardTitle>
-               
+                <div className='flex items-center justify-start gap-2'>
+                  <BulletType bulletType={data.bulletType}/>
+                  <ArmorType armorType={data.armorType}/>
+                </div>
               </CardHeader>
               <CardContent>
                 <p className="line-clamp-6 text-sm text-gray-700">{data.profile}</p>
@@ -51,7 +57,7 @@ function Home() {
                   )}
                 </div>
                 <Link to={`/character/character-detail`} search={{ name: data.name }} className="w-full">
-                  <Button className="w-full">Detail</Button>
+                  <Button className="w-full hover:cursor-pointer">Detail</Button>
                 </Link>
               </CardFooter>
             </Card>

@@ -4,6 +4,7 @@ import { BiBook, BiHeartCircle } from 'react-icons/bi'
 import HeroImage from '../assets/download.webp'
 import IconImage from '../assets/image.webp'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { FaPeopleArrows } from 'react-icons/fa'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -15,7 +16,7 @@ function RouteComponent() {
       <header className="fixed top-0 left-0 right-0 z-10 bg-slate-900/30 shadow-lg">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <Link href="/">
+            <Link to="/">
               <img src={IconImage} alt="Logo" width={150} height={50} />
             </Link>
           </div>
@@ -31,7 +32,7 @@ function RouteComponent() {
               className='object-cover min-h-screen'
             />
           </div>
-          <div className="absolute inset-0 bg-black/75">
+          <div className="absolute inset-0 bg-black/90 font-fira">
             <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
               <h1 className="text-5xl font-bold mb-4 text-center bg-gradient-to-r from-[#63d7f7] to-white bg-clip-text text-transparent px-4">
                 Welcome to Blue Archive Wiki App
@@ -43,13 +44,13 @@ function RouteComponent() {
               This wiki is your comprehensive resource for all things related to Blue Archive, offering detailed information about characters, gameplay mechanics, events, and more
               </p>
               <motion.div className='w-full py-5 flex justify-around mx-auto' initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{once: true}}>
-                <Link href="/character" className="w-48 hover:cursor-pointer">
+                <Link to="/character" className="w-48 hover:cursor-pointer">
                   <Card className="h-40 p-4 shadow-lg hover:shadow-xl transition duration-200">
                     <CardHeader>
-                      <CardTitle className="font-bold">Character List</CardTitle>
+                      <CardTitle className="font-bold text-xs text-center">Character List</CardTitle>
                     </CardHeader>
                     <CardContent className="flex items-center justify-center">
-                      <BiBook size={36}/>
+                      <FaPeopleArrows size={36}/>
                     </CardContent>
                   </Card>
                 </Link>
