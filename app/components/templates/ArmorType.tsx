@@ -4,11 +4,11 @@ import HeavyIcon from '../icons/defense/HeavyIcon';
 import SpecialIcon from '../icons/defense/SpecialIcon';
 import ElasticIcon from '../icons/defense/ElasticIcon';
 
-interface ArmorTypeProps {
+interface IArmorType {
    armorType: string;
   }
 
-const ArmorType = ({armorType}: ArmorTypeProps) => (
+const ArmorType = ({armorType}: IArmorType) => (
     <>
         {armorType === "Light" ? <LightIcon /> :
            armorType === "Heavy" ? <HeavyIcon /> :

@@ -8,6 +8,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import ExplosiveIcon from '@/components/icons/attack/ExplosiveIcon'
 import BulletType from '@/components/templates/BulletType'
 import ArmorType from '@/components/templates/ArmorType'
+import PositionPill from '@/components/templates/PositionPill'
 
 export const Route = createFileRoute('/character/')({
   component: Home,
@@ -42,13 +43,14 @@ function Home() {
                   <BulletType bulletType={data.bulletType}/>
                   <ArmorType armorType={data.armorType}/>
                 </div>
+                {/* <PositionPill position={data.position}/> */}
               </CardHeader>
               <CardContent>
                 <p className="line-clamp-6 text-sm text-gray-700">{data.profile}</p>
               </CardContent>
               <CardFooter className='justify-between gap-5'>
                 <div className="flex">
-                  {[...Array(5)].map((_, index) =>
+                  {[...Array(3)].map((_, index) =>
                     index < data.baseStar ? (
                       <FaStar key={index} className="text-yellow-400" />
                     ) : (

@@ -4,11 +4,11 @@ import SonicIcon from '../icons/attack/SonicIcon'
 import MysticIcon from '../icons/attack/MysticIcon'
 import PiercingIcon from '../icons/attack/PiercingIcon'
 
-interface BulletTypeProps {
+interface IBulletType {
     bulletType: string;
   }
 
-const BulletType = ({bulletType}: BulletTypeProps) => (
+const BulletType = ({bulletType}: IBulletType) => (
     <>
         {bulletType === "Explosive" ? <ExplosiveIcon /> :
             bulletType === "Sonic" ? <SonicIcon /> :
