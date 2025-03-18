@@ -16,7 +16,7 @@ function Detail() {
   const { data } = useQuery({
     queryKey: ['characters', search],
     queryFn: async () => {
-      const response = await fetch(`${apiUrl}characters?name=${search}`, {
+      const response = await fetch(`/api/students/${encodeURIComponent(search)}`, {
         method: 'GET',
       });
 
@@ -32,8 +32,8 @@ function Detail() {
 
       return filteredData;
     },
-    staleTime: 1000 * 60 * 60 * 24 * 90, // 3 bulan dalam milidetik
-    enabled: search !== '', // Hanya jalankan query jika search tidak kosong
+    staleTime: 1000 * 60 * 60 * 24 * 90,
+    enabled: search !== '',
   });
 
   return (

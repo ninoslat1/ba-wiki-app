@@ -1,11 +1,14 @@
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import { NotFound } from './components/NotFound'
+import { DefaultCatchBoundary } from './components/DefaultCatchBoundary'
 
 export function createRouter() {
     const router = createTanStackRouter({
         routeTree,
-        defaultNotFoundComponent: NotFound,
+        defaultPreload: 'intent',
+        defaultErrorComponent: DefaultCatchBoundary,
+        defaultNotFoundComponent: () => <NotFound />,
         pathParamsAllowedCharacters: ['$']
     })
 
