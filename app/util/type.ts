@@ -1,3 +1,5 @@
+import { ReactElement } from "react"
+
 type TerrainStats = {
     DamageDealt: string
     ShieldBlockRate: string
@@ -40,4 +42,10 @@ export type TDetailCharacterList = {
     message: string
     dataAllPages: number
     data: TDetailCharacter[]
+}
+
+export type TFilterOption = {
+    key: string;
+  icon: ReactElement;
+  label: string;
 }

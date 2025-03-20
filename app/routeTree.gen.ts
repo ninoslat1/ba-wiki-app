@@ -11,11 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as CharacterRouteImport } from './routes/character/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as CharacterIndexImport } from './routes/character/index'
 import { Route as CharacterCharacterDetailIndexImport } from './routes/character/character-detail/index'
 
 // Create/Update Routes
+
+const CharacterRouteRoute = CharacterRouteImport.update({
+  id: '/character',
+  path: '/character',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -24,16 +31,16 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const CharacterIndexRoute = CharacterIndexImport.update({
-  id: '/character/',
-  path: '/character/',
-  getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => CharacterRouteRoute,
 } as any)
 
 const CharacterCharacterDetailIndexRoute =
   CharacterCharacterDetailIndexImport.update({
-    id: '/character/character-detail/',
-    path: '/character/character-detail/',
-    getParentRoute: () => rootRoute,
+    id: '/character-detail/',
+    path: '/character-detail/',
+    getParentRoute: () => CharacterRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -47,28 +54,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/character/': {
-      id: '/character/'
+    '/character': {
+      id: '/character'
       path: '/character'
       fullPath: '/character'
-      preLoaderRoute: typeof CharacterIndexImport
+      preLoaderRoute: typeof CharacterRouteImport
       parentRoute: typeof rootRoute
+    }
+    '/character/': {
+      id: '/character/'
+      path: '/'
+      fullPath: '/character/'
+      preLoaderRoute: typeof CharacterIndexImport
+      parentRoute: typeof CharacterRouteImport
     }
     '/character/character-detail/': {
       id: '/character/character-detail/'
-      path: '/character/character-detail'
+      path: '/character-detail'
       fullPath: '/character/character-detail'
       preLoaderRoute: typeof CharacterCharacterDetailIndexImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof CharacterRouteImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface CharacterRouteRouteChildren {
+  CharacterIndexRoute: typeof CharacterIndexRoute
+  CharacterCharacterDetailIndexRoute: typeof CharacterCharacterDetailIndexRoute
+}
+
+const CharacterRouteRouteChildren: CharacterRouteRouteChildren = {
+  CharacterIndexRoute: CharacterIndexRoute,
+  CharacterCharacterDetailIndexRoute: CharacterCharacterDetailIndexRoute,
+}
+
+const CharacterRouteRouteWithChildren = CharacterRouteRoute._addFileChildren(
+  CharacterRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/character': typeof CharacterIndexRoute
+  '/character': typeof CharacterRouteRouteWithChildren
+  '/character/': typeof CharacterIndexRoute
   '/character/character-detail': typeof CharacterCharacterDetailIndexRoute
 }
 
@@ -81,29 +110,33 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/character': typeof CharacterRouteRouteWithChildren
   '/character/': typeof CharacterIndexRoute
   '/character/character-detail/': typeof CharacterCharacterDetailIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/character' | '/character/character-detail'
+  fullPaths: '/' | '/character' | '/character/' | '/character/character-detail'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/character' | '/character/character-detail'
-  id: '__root__' | '/' | '/character/' | '/character/character-detail/'
+  id:
+    | '__root__'
+    | '/'
+    | '/character'
+    | '/character/'
+    | '/character/character-detail/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CharacterIndexRoute: typeof CharacterIndexRoute
-  CharacterCharacterDetailIndexRoute: typeof CharacterCharacterDetailIndexRoute
+  CharacterRouteRoute: typeof CharacterRouteRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CharacterIndexRoute: CharacterIndexRoute,
-  CharacterCharacterDetailIndexRoute: CharacterCharacterDetailIndexRoute,
+  CharacterRouteRoute: CharacterRouteRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -117,18 +150,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/character/",
-        "/character/character-detail/"
+        "/character"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/character": {
+      "filePath": "character/route.tsx",
+      "children": [
+        "/character/",
+        "/character/character-detail/"
+      ]
+    },
     "/character/": {
-      "filePath": "character/index.tsx"
+      "filePath": "character/index.tsx",
+      "parent": "/character"
     },
     "/character/character-detail/": {
-      "filePath": "character/character-detail/index.tsx"
+      "filePath": "character/character-detail/index.tsx",
+      "parent": "/character"
     }
   }
 }
