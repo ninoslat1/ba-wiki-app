@@ -75,13 +75,6 @@ function Home() {
   return (
     <>
       <div className="flex flex-col min-h-screen">
-        <input
-          type="text"
-          placeholder="Cari karakter..."
-          value={nameFilter$.get()}
-          onChange={(e) => nameFilter$.set(e.target.value)}
-          className="p-2 border border-gray-300 rounded mb-4"
-        />
         <div className="grid gap-6 auto-rows-auto grid-cols-[repeat(auto-fill,minmax(200px,1fr))] p-4 flex-grow">
           {currentData.map((data) => (
             <Card

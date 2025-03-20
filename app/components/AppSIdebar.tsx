@@ -19,7 +19,9 @@ import { TFilterOption } from "@/util/type"
 import { cn } from "@/lib/utils"
 import { observable } from "@legendapp/state"
 import { use$ } from "@legendapp/state/react"
-import { attackFilter$ } from "@/stores/filter"
+import { attackFilter$, nameFilter$ } from "@/stores/filter"
+import { Input } from "./ui/input"
+import { NameFilterInput } from "./NameFilter"
 
 const filterOptions:TFilterOption[] = [
     { key: 'Explosive', icon: <ExplosiveIcon />, label: 'Explosive' },
@@ -30,34 +32,39 @@ const filterOptions:TFilterOption[] = [
 
 export function AppSidebar() {
   const selectedFilter = use$(attackFilter$)
+  const nameFilter = use$(nameFilter$)
     
   return (
     <Sidebar>
       <SidebarContent>
+      <SidebarGroup>
+          <SidebarGroupLabel className="font-fira">Name Filter</SidebarGroupLabel>
+          <SidebarGroupContent className="w-full">
+          <NameFilterInput/>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        
         <SidebarGroup>
           <SidebarGroupLabel className="font-fira">Students Filter</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-              </SidebarMenuItem>
-            </SidebarMenu>
+              <SidebarGroup>
+                  <SidebarGroupLabel className="font-fira">Attack</SidebarGroupLabel>
+                      <SidebarGroupContent>
+                          <SidebarMenu className="grid grid-cols-2">
+                              {filterOptions.map(({ key, icon, label }) => (
+                              <SidebarMenuItem key={key} className={cn(" bg-blue-300/50 rounded-md", selectedFilter === key ? "bg-blue-500 text-white" : '')} onClick={() => attackFilter$.set(selectedFilter === key ? null : key as typeof selectedFilter)}>
+                                  <SidebarMenuButton className="hover:cursor-pointer">
+                                  {icon}
+                                  <span>{label}</span>
+                                  </SidebarMenuButton>
+                              </SidebarMenuItem>
+                              ))}
+                          </SidebarMenu>
+                      </SidebarGroupContent>
+             </SidebarGroup>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup>
-            <SidebarGroupLabel className="font-fira">Attack</SidebarGroupLabel>
-                <SidebarGroupContent>
-                    <SidebarMenu className="grid grid-cols-2">
-                        {filterOptions.map(({ key, icon, label }) => (
-                        <SidebarMenuItem key={key} className={cn(" bg-blue-300/50 rounded-md", selectedFilter === key ? "bg-blue-500 text-white" : '')} onClick={() => attackFilter$.set(key as unknown as typeof attackFilter$)}>
-                            <SidebarMenuButton className="hover:cursor-pointer">
-                            {icon}
-                            <span>{label}</span>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        ))}
-                    </SidebarMenu>
-                </SidebarGroupContent>
-      </SidebarGroup>
+        
       </SidebarContent>
 
     </Sidebar>
