@@ -1,6 +1,7 @@
 import { createFileRoute, useSearch } from '@tanstack/react-router';
 import { TCharacter, TDetailCharacter } from '../../../util/type';
 import { useQuery } from '@tanstack/react-query'
+import LoadingLogo from '@/components/LoadingLogo';
 
 export const Route = createFileRoute('/character/character-detail/')({
   component: Detail,
@@ -13,15 +14,21 @@ function Detail() {
     select: (search: TCharacter) => search.name,
   });
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
+    retry: false,
+    refetchOnWindowFocus: false,
     queryKey: ['characters', search],
     queryFn: async () => {
       const response = await fetch(`/api/students/${encodeURIComponent(search)}`, {
         method: 'GET',
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      if (response.status === 505) {
+        throw new Error('Internal Server Error');
+      }
+
+      if(response.status === 404){
+        throw new Error("Student not found");
       }
 
       const characterDetailData = await response.json();
@@ -37,8 +44,8 @@ function Detail() {
   });
 
   return (
-    <div>
-      {data ? (
+    <>
+      {data && !isLoading ? (
         data.map(character => (
           <div key={character._id}>
             <h1>{character.name}</h1>
@@ -48,8 +55,8 @@ function Detail() {
           </div>
         ))
       ) : (
-        <p>Loading...</p>
+        <LoadingLogo />
       )}
-    </div>
+    </>
   );
 }

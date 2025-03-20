@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { motion } from 'framer-motion'
 import { BiBook, BiHeartCircle } from 'react-icons/bi'
 import HeroImage from '../assets/download.webp'
 import IconImage from '../assets/image.webp'
@@ -43,14 +42,16 @@ function RouteComponent() {
               <p className="text-lg max-w-3xl py-2 text-center px-4">
               This wiki is your comprehensive resource for all things related to Blue Archive, offering detailed information about characters, gameplay mechanics, events, and more
               </p>
-              <motion.div className='w-full py-5 flex justify-around mx-auto' initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{once: true}}>
-                <Link to="/character" className="w-48 hover:cursor-pointer">
-                  <Card className="h-40 p-4 shadow-lg hover:shadow-xl transition duration-200">
+              <div className='w-full py-5 flex justify-around mx-auto'>
+              <Link to="/character" className="group w-48 hover:cursor-pointer">
+                  <Card className="h-35 p-4 shadow-lg border-0 transition duration-200 group-hover:shadow-xl group-hover:bg-mystic">
                     <CardHeader>
-                      <CardTitle className="font-bold text-xs text-center">Character List</CardTitle>
+                      <CardTitle className="font-bold text-xs text-center transition duration-200 group-hover:text-white">
+                        Character List
+                      </CardTitle>
                     </CardHeader>
-                    <CardContent className="flex items-center justify-center">
-                      <FaPeopleArrows size={36}/>
+                    <CardContent className="flex items-center justify-center transition duration-200 group-hover:text-white">
+                      <FaPeopleArrows size={36} />
                     </CardContent>
                   </Card>
                 </Link>
@@ -63,7 +64,7 @@ function RouteComponent() {
                   <div className='flex flex-col gap-2 items-center justify-center max-w-3xl'>
                       
                   </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
