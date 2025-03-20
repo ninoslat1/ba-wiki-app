@@ -19,7 +19,7 @@ import { TFilterOption } from "@/util/type"
 import { cn } from "@/lib/utils"
 import { observable } from "@legendapp/state"
 import { use$ } from "@legendapp/state/react"
-import { attackFilter$ } from "@/stores/attackFilter"
+import { attackFilter$ } from "@/stores/filter"
 
 const filterOptions:TFilterOption[] = [
     { key: 'Explosive', icon: <ExplosiveIcon />, label: 'Explosive' },

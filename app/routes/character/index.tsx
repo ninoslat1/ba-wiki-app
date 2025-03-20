@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { getCharacterData } from '../../functions/server'
 import { FaStar, FaRegStar } from 'react-icons/fa'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -22,8 +22,10 @@ import ExplosiveIcon from '@/components/icons/attack/ExplosiveIcon'
 import BulletType from '@/components/templates/BulletType'
 import ArmorType from '@/components/templates/ArmorType'
 import PositionPill from '@/components/templates/PositionPill'
-import { attackFilter$ } from '@/stores/attackFilter'
+import { attackFilter$, nameFilter$ } from '@/stores/filter'
 import { use$ } from '@legendapp/state/react'
+import { LazyTrie } from '@/util/lazy-expand.trie'
+// import { Trie } from '@/util/trie'
 
 export const Route = createFileRoute('/character/')({
   component: Home,
@@ -36,13 +38,28 @@ function Home() {
   const filteredState = state.filter((data) => !data.name.includes('('))
   const [page, setPage] = useState(1)
   const attackFilter = use$(attackFilter$);
+  const nameFilter = use$(nameFilter$)
   const startIndex = (page - 1) * items
-  const data = filteredState.filter((d) => {
-    const atkFilter = attackFilter ? d.bulletType === attackFilter : true
-    return atkFilter
-  })
-  const totalPages = Math.ceil(data.length / items)
 
+  const trie = useMemo(() => {
+    const t = new LazyTrie()
+    filteredState.forEach((char) => t.insert(char.name))
+    return t
+  }, [filteredState])
+
+  const filteredName = useMemo(() => {
+    return nameFilter ? trie.search(nameFilter) : filteredState.map((char) => char.name)
+  },[nameFilter, trie])
+
+  const data = useMemo(() => {
+    return filteredState.filter((char) => {
+      const atkFilter = attackFilter ? char.bulletType === attackFilter : true
+      const nameFilter = filteredName.includes(char.name)
+      return nameFilter && atkFilter
+    });
+  }, [filteredState, filteredName, attackFilter]);
+
+  const totalPages = Math.ceil(data.length / items)
   const currentData = data.slice(startIndex, startIndex + items);
 
   const handlePageChange = (newPage) => {
@@ -51,9 +68,20 @@ function Home() {
     }
   }
 
+  useEffect(() => {
+    setPage(1);
+  }, [attackFilter, nameFilter]);
+
   return (
     <>
       <div className="flex flex-col min-h-screen">
+        <input
+          type="text"
+          placeholder="Cari karakter..."
+          value={nameFilter$.get()}
+          onChange={(e) => nameFilter$.set(e.target.value)}
+          className="p-2 border border-gray-300 rounded mb-4"
+        />
         <div className="grid gap-6 auto-rows-auto grid-cols-[repeat(auto-fill,minmax(200px,1fr))] p-4 flex-grow">
           {currentData.map((data) => (
             <Card
