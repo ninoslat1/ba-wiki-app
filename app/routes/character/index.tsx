@@ -22,9 +22,10 @@ import ExplosiveIcon from '@/components/icons/attack/ExplosiveIcon'
 import BulletType from '@/components/templates/BulletType'
 import ArmorType from '@/components/templates/ArmorType'
 import PositionPill from '@/components/templates/PositionPill'
-import { attackFilter$, nameFilter$ } from '@/stores/filter'
+import { attackFilter$, defenseFilter$, nameFilter$, starFilter$ } from '@/stores/filter'
 import { use$ } from '@legendapp/state/react'
 import { LazyTrie } from '@/util/lazy-expand.trie'
+import StarRarity from '@/components/templates/StarRarity'
 // import { Trie } from '@/util/trie'
 
 export const Route = createFileRoute('/character/')({
@@ -39,6 +40,8 @@ function Home() {
   const [page, setPage] = useState(1)
   const attackFilter = use$(attackFilter$);
   const nameFilter = use$(nameFilter$)
+  const defenseFilter = use$(defenseFilter$)
+  const starFilter = use$(starFilter$)
   const startIndex = (page - 1) * items
 
   const trie = useMemo(() => {
@@ -54,10 +57,12 @@ function Home() {
   const data = useMemo(() => {
     return filteredState.filter((char) => {
       const atkFilter = attackFilter ? char.bulletType === attackFilter : true
+      const defFilter = defenseFilter ? char.armorType === defenseFilter : true
+      const strFilter = starFilter ? char.baseStar === starFilter : true
       const nameFilter = filteredName.includes(char.name)
-      return nameFilter && atkFilter
+      return nameFilter && atkFilter && defFilter && strFilter
     });
-  }, [filteredState, filteredName, attackFilter]);
+  }, [filteredState, filteredName, attackFilter, defenseFilter]);
 
   const totalPages = Math.ceil(data.length / items)
   const currentData = data.slice(startIndex, startIndex + items);
@@ -70,7 +75,7 @@ function Home() {
 
   useEffect(() => {
     setPage(1);
-  }, [attackFilter, nameFilter]);
+  }, [attackFilter, nameFilter, defenseFilter, starFilter]);
 
   return (
     <>
@@ -96,13 +101,7 @@ function Home() {
               </CardContent>
               <CardFooter className="justify-between gap-5">
                 <div className="flex">
-                  {[...Array(3)].map((_, index) =>
-                    index < data.baseStar ? (
-                      <FaStar key={index} className="text-yellow-400" />
-                    ) : (
-                      <FaRegStar key={index} className="text-gray-400" />
-                    ),
-                  )}
+                  <StarRarity baseStar={data.baseStar}/>
                 </div>
                 <Link
                   to={`/character/character-detail`}

@@ -15,7 +15,7 @@ export default defineConfig({
             alias: {
                 "@": path.resolve(__dirname, "app"),
             }
-        }
+        },
     },
     server: {
         preset: "node-server",

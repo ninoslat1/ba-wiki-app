@@ -45,7 +45,6 @@ export type TDetailCharacterList = {
 }
 
 export type TFilterOption = {
-    key: string;
+  key: string;
   icon: ReactElement;
-  label: string;
 }
