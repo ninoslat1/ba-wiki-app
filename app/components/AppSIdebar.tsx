@@ -56,7 +56,7 @@ export function AppSidebar() {
   const starFilter = use$(starFilter$)
     
   return (
-    <Sidebar>
+    <Sidebar data-testid="sidebar">
       <SidebarContent>
       <SidebarGroup>
           <SidebarGroupLabel className="font-fira">Name</SidebarGroupLabel>

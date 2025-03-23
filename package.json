@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "cypress open",
+    "test": "npx vitest",
     "dev": "vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start"
@@ -38,12 +38,18 @@
     "vinxi": "^0.5.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@types/jest": "^29.5.14",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "jsdom": "^26.0.0",
     "postcss": "^8.5.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.9"
   },
   "overrides": {
     "@typescript-eslint/eslint-plugin": {
