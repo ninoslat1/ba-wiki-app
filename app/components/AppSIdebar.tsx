@@ -59,16 +59,16 @@ export function AppSidebar() {
     <Sidebar data-testid="sidebar">
       <SidebarContent>
       <SidebarGroup>
-          <SidebarGroupLabel className="font-fira">Name</SidebarGroupLabel>
+          <SidebarGroupLabel className="font-fira" data-testid="name">Name</SidebarGroupLabel>
           <SidebarGroupContent className="w-full">
           <NameFilterInput/>
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel className="font-fira">Students</SidebarGroupLabel>
+          <SidebarGroupLabel  data-testid="students" className="font-fira">Students</SidebarGroupLabel>
           <SidebarGroupContent>
               <SidebarGroup>
-                  <SidebarGroupLabel className="font-fira">Attack</SidebarGroupLabel>
+                  <SidebarGroupLabel  data-testid="attack" className="font-fira">Attack</SidebarGroupLabel>
                       <SidebarGroupContent>
                           <SidebarMenu className="grid grid-cols-2">
                               {attackOptions.map(({ key, icon }) => (
@@ -89,7 +89,7 @@ export function AppSidebar() {
               <SidebarGroup>
                   <Collapsible open={isDefOpen} onOpenChange={setIsDefOpen}>
                     <CollapsibleTrigger asChild className="hover:cursor-pointer">
-                      <SidebarGroupLabel className="font-fira">Defense</SidebarGroupLabel>
+                      <SidebarGroupLabel  data-testid="defense" className="font-fira">Defense</SidebarGroupLabel>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                         <SidebarGroupContent>
@@ -112,7 +112,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
               <SidebarGroup>
-                  <SidebarGroupLabel className="font-fira">Rarity</SidebarGroupLabel>
+                  <SidebarGroupLabel  data-testid="rarity" className="font-fira">Rarity</SidebarGroupLabel>
                       <SidebarGroupContent>
                           <SidebarMenu className="grid grid-cols-2">
                               {starOptions.map(({ key, icon }) => (
@@ -129,7 +129,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
     </Sidebar>
   )
 }

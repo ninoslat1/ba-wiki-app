@@ -4,7 +4,6 @@ import HeroImage from '../assets/download.webp'
 import IconImage from '../assets/image.webp'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FaPeopleArrows } from 'react-icons/fa'
-import { FC } from 'react'
 
 export default function Home() {
   return (
