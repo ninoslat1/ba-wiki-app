@@ -11,9 +11,9 @@ interface IArmorType {
 const ArmorType = ({armorType}: IArmorType) => (
     <>
         {armorType === "Light" ? <LightIcon /> :
-           armorType === "Heavy" ? <HeavyIcon /> :
-               armorType === "Special" ? <SpecialIcon /> :
-                   armorType === "Elastic" ? <ElasticIcon /> : null}
+        armorType === "Heavy" ? <HeavyIcon /> :
+        armorType === "Special" ? <SpecialIcon /> :
+        armorType === "Elastic" ? <ElasticIcon /> : null}
     </>
 )
 

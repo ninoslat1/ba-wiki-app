@@ -8,18 +8,23 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as CharacterRouteImport } from './routes/character/route'
 import { Route as IndexImport } from './routes/index'
-import { Route as CharacterIndexImport } from './routes/character/index'
-import { Route as CharacterCharacterDetailRouteImport } from './routes/character/character-detail/route'
+import { Route as CharacterSidebarImport } from './routes/character/_sidebar'
 import { Route as CharacterCharacterDetailIndexImport } from './routes/character/character-detail/index'
+import { Route as CharacterSidebarIndexImport } from './routes/character/_sidebar.index'
+
+// Create Virtual Routes
+
+const CharacterImport = createFileRoute('/character')()
 
 // Create/Update Routes
 
-const CharacterRouteRoute = CharacterRouteImport.update({
+const CharacterRoute = CharacterImport.update({
   id: '/character',
   path: '/character',
   getParentRoute: () => rootRoute,
@@ -31,25 +36,23 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const CharacterIndexRoute = CharacterIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => CharacterRouteRoute,
+const CharacterSidebarRoute = CharacterSidebarImport.update({
+  id: '/_sidebar',
+  getParentRoute: () => CharacterRoute,
 } as any)
-
-const CharacterCharacterDetailRouteRoute =
-  CharacterCharacterDetailRouteImport.update({
-    id: '/character-detail',
-    path: '/character-detail',
-    getParentRoute: () => CharacterRouteRoute,
-  } as any)
 
 const CharacterCharacterDetailIndexRoute =
   CharacterCharacterDetailIndexImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => CharacterCharacterDetailRouteRoute,
+    id: '/character-detail/',
+    path: '/character-detail/',
+    getParentRoute: () => CharacterRoute,
   } as any)
+
+const CharacterSidebarIndexRoute = CharacterSidebarIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CharacterSidebarRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -66,115 +69,105 @@ declare module '@tanstack/react-router' {
       id: '/character'
       path: '/character'
       fullPath: '/character'
-      preLoaderRoute: typeof CharacterRouteImport
+      preLoaderRoute: typeof CharacterImport
       parentRoute: typeof rootRoute
     }
-    '/character/character-detail': {
-      id: '/character/character-detail'
-      path: '/character-detail'
-      fullPath: '/character/character-detail'
-      preLoaderRoute: typeof CharacterCharacterDetailRouteImport
-      parentRoute: typeof CharacterRouteImport
+    '/character/_sidebar': {
+      id: '/character/_sidebar'
+      path: '/character'
+      fullPath: '/character'
+      preLoaderRoute: typeof CharacterSidebarImport
+      parentRoute: typeof CharacterRoute
     }
-    '/character/': {
-      id: '/character/'
+    '/character/_sidebar/': {
+      id: '/character/_sidebar/'
       path: '/'
       fullPath: '/character/'
-      preLoaderRoute: typeof CharacterIndexImport
-      parentRoute: typeof CharacterRouteImport
+      preLoaderRoute: typeof CharacterSidebarIndexImport
+      parentRoute: typeof CharacterSidebarImport
     }
     '/character/character-detail/': {
       id: '/character/character-detail/'
-      path: '/'
-      fullPath: '/character/character-detail/'
+      path: '/character-detail'
+      fullPath: '/character/character-detail'
       preLoaderRoute: typeof CharacterCharacterDetailIndexImport
-      parentRoute: typeof CharacterCharacterDetailRouteImport
+      parentRoute: typeof CharacterImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface CharacterCharacterDetailRouteRouteChildren {
+interface CharacterSidebarRouteChildren {
+  CharacterSidebarIndexRoute: typeof CharacterSidebarIndexRoute
+}
+
+const CharacterSidebarRouteChildren: CharacterSidebarRouteChildren = {
+  CharacterSidebarIndexRoute: CharacterSidebarIndexRoute,
+}
+
+const CharacterSidebarRouteWithChildren =
+  CharacterSidebarRoute._addFileChildren(CharacterSidebarRouteChildren)
+
+interface CharacterRouteChildren {
+  CharacterSidebarRoute: typeof CharacterSidebarRouteWithChildren
   CharacterCharacterDetailIndexRoute: typeof CharacterCharacterDetailIndexRoute
 }
 
-const CharacterCharacterDetailRouteRouteChildren: CharacterCharacterDetailRouteRouteChildren =
-  {
-    CharacterCharacterDetailIndexRoute: CharacterCharacterDetailIndexRoute,
-  }
-
-const CharacterCharacterDetailRouteRouteWithChildren =
-  CharacterCharacterDetailRouteRoute._addFileChildren(
-    CharacterCharacterDetailRouteRouteChildren,
-  )
-
-interface CharacterRouteRouteChildren {
-  CharacterCharacterDetailRouteRoute: typeof CharacterCharacterDetailRouteRouteWithChildren
-  CharacterIndexRoute: typeof CharacterIndexRoute
+const CharacterRouteChildren: CharacterRouteChildren = {
+  CharacterSidebarRoute: CharacterSidebarRouteWithChildren,
+  CharacterCharacterDetailIndexRoute: CharacterCharacterDetailIndexRoute,
 }
 
-const CharacterRouteRouteChildren: CharacterRouteRouteChildren = {
-  CharacterCharacterDetailRouteRoute:
-    CharacterCharacterDetailRouteRouteWithChildren,
-  CharacterIndexRoute: CharacterIndexRoute,
-}
-
-const CharacterRouteRouteWithChildren = CharacterRouteRoute._addFileChildren(
-  CharacterRouteRouteChildren,
+const CharacterRouteWithChildren = CharacterRoute._addFileChildren(
+  CharacterRouteChildren,
 )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/character': typeof CharacterRouteRouteWithChildren
-  '/character/character-detail': typeof CharacterCharacterDetailRouteRouteWithChildren
-  '/character/': typeof CharacterIndexRoute
-  '/character/character-detail/': typeof CharacterCharacterDetailIndexRoute
+  '/character': typeof CharacterSidebarRouteWithChildren
+  '/character/': typeof CharacterSidebarIndexRoute
+  '/character/character-detail': typeof CharacterCharacterDetailIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/character': typeof CharacterIndexRoute
+  '/character': typeof CharacterSidebarIndexRoute
   '/character/character-detail': typeof CharacterCharacterDetailIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/character': typeof CharacterRouteRouteWithChildren
-  '/character/character-detail': typeof CharacterCharacterDetailRouteRouteWithChildren
-  '/character/': typeof CharacterIndexRoute
+  '/character': typeof CharacterRouteWithChildren
+  '/character/_sidebar': typeof CharacterSidebarRouteWithChildren
+  '/character/_sidebar/': typeof CharacterSidebarIndexRoute
   '/character/character-detail/': typeof CharacterCharacterDetailIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/character'
-    | '/character/character-detail'
-    | '/character/'
-    | '/character/character-detail/'
+  fullPaths: '/' | '/character' | '/character/' | '/character/character-detail'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/character' | '/character/character-detail'
   id:
     | '__root__'
     | '/'
     | '/character'
-    | '/character/character-detail'
-    | '/character/'
+    | '/character/_sidebar'
+    | '/character/_sidebar/'
     | '/character/character-detail/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CharacterRouteRoute: typeof CharacterRouteRouteWithChildren
+  CharacterRoute: typeof CharacterRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CharacterRouteRoute: CharacterRouteRouteWithChildren,
+  CharacterRoute: CharacterRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -195,26 +188,26 @@ export const routeTree = rootRoute
       "filePath": "index.tsx"
     },
     "/character": {
-      "filePath": "character/route.tsx",
+      "filePath": "character",
       "children": [
-        "/character/character-detail",
-        "/character/"
-      ]
-    },
-    "/character/character-detail": {
-      "filePath": "character/character-detail/route.tsx",
-      "parent": "/character",
-      "children": [
+        "/character/_sidebar",
         "/character/character-detail/"
       ]
     },
-    "/character/": {
-      "filePath": "character/index.tsx",
-      "parent": "/character"
+    "/character/_sidebar": {
+      "filePath": "character/_sidebar.tsx",
+      "parent": "/character",
+      "children": [
+        "/character/_sidebar/"
+      ]
+    },
+    "/character/_sidebar/": {
+      "filePath": "character/_sidebar.index.tsx",
+      "parent": "/character/_sidebar"
     },
     "/character/character-detail/": {
       "filePath": "character/character-detail/index.tsx",
-      "parent": "/character/character-detail"
+      "parent": "/character"
     }
   }
 }

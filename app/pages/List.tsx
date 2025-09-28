@@ -3,10 +3,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { use$ } from '@legendapp/state/react'
 import {
   attackFilter$,
+  characterList$,
   defenseFilter$,
   nameFilter$,
   starFilter$,
-} from '@/stores/filter'
+} from '@/stores/character'
 import {
   Card,
   CardHeader,
@@ -29,9 +30,10 @@ import { LazyTrie } from '@/util/lazy-expand.trie'
 import StarRarity from '@/components/templates/StarRarity'
 import { Link } from '@tanstack/react-router'
 import { TCharacter } from '@/util/type'
+import Header from '@/components/Header'
 
 export default function ListPage({ state }: {state: TCharacter[]}) {
-  const items = 14
+  const items = 12
   const filteredState = state.filter((data) => !data.name.includes('('))
   const [page, setPage] = useState(1)
   const attackFilter = use$(attackFilter$)
@@ -62,6 +64,7 @@ export default function ListPage({ state }: {state: TCharacter[]}) {
 
   const totalPages = Math.ceil(data.length / items)
   const currentData = data.slice(startIndex, startIndex + items)
+  characterList$.set(state.map(d => d.name))
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -76,7 +79,7 @@ export default function ListPage({ state }: {state: TCharacter[]}) {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="grid gap-6 auto-rows-auto grid-cols-[repeat(auto-fill,minmax(200px,1fr))] p-4 flex-grow">
-        {currentData.map((data) => (
+        {currentData.map((data, index) => (
           <Card key={data.id} className="h-80 flex flex-col justify-between shadow-lg">
             <CardHeader>
               <CardTitle>{data.name}</CardTitle>

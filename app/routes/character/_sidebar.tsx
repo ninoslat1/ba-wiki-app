@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { AppSidebar } from '@/components/AppSIdebar'
 
-export const Route = createFileRoute('/character/character-detail')({
+export const Route = createFileRoute('/character/_sidebar')({
   component: CharacterLayout,
 })
 

@@ -1,4 +1,4 @@
-import { nameFilter$ } from "@/stores/filter"
+import { nameFilter$ } from "@/stores/character"
 import { use$ } from "@legendapp/state/react"
 
 export const NameFilterInput = () => {

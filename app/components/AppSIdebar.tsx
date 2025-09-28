@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -19,7 +19,7 @@ import { TFilterOption } from "@/util/type"
 import { cn } from "@/lib/utils"
 import { observable } from "@legendapp/state"
 import { use$ } from "@legendapp/state/react"
-import { attackFilter$, defenseFilter$, nameFilter$, starFilter$ } from "@/stores/filter"
+import { attackFilter$, defenseFilter$, nameFilter$, starFilter$ } from "@/stores/character"
 import { Input } from "./ui/input"
 import { NameFilterInput } from "./NameFilter"
 import LightIcon from "./icons/defense/LightIcon"
@@ -28,6 +28,7 @@ import HeavyIcon from "./icons/defense/HeavyIcon"
 import SpecialIcon from "./icons/defense/SpecialIcon"
 import StarRarity from "./templates/StarRarity"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
+import { useAutoAnimate } from '@formkit/auto-animate/react'  
 
 const attackOptions:TFilterOption[] = [
     { key: 'Explosive', icon: <ExplosiveIcon /> },
@@ -50,11 +51,14 @@ const starOptions: TFilterOption[] = [
 ]
 
 export function AppSidebar() {
-  const [isDefOpen, setIsDefOpen] = useState(false)
+  const [isDefOpen, setIsDefOpen] = useState<boolean>(false)
+  const [isRarityOpen, setIsRarityOpen] = useState<boolean>(false)
   const attackFilter = use$(attackFilter$)
   const defenseFilter = use$(defenseFilter$)
-  const starFilter = use$(starFilter$)
-    
+  const starFilter = use$(starFilter$) 
+  const [parentDef] = useAutoAnimate()
+  const [parentRarity] = useAutoAnimate()
+
   return (
     <Sidebar data-testid="sidebar">
       <SidebarContent>
@@ -89,22 +93,29 @@ export function AppSidebar() {
               <SidebarGroup>
                   <Collapsible open={isDefOpen} onOpenChange={setIsDefOpen}>
                     <CollapsibleTrigger asChild className="hover:cursor-pointer">
-                      <SidebarGroupLabel  data-testid="defense" className="font-fira">Defense</SidebarGroupLabel>
+                      <SidebarGroupLabel  data-testid="defense" className="font-fira flex justify-between">
+                        <p>Defense</p>
+                        {!isDefOpen ? <ArrowBigDownDashIcon/> : <ArrowBigUpDashIcon/>}
+                      </SidebarGroupLabel>
                     </CollapsibleTrigger>
-                    <CollapsibleContent>
-                        <SidebarGroupContent>
-                            <SidebarMenu className="grid grid-cols-2">
-                                {defenseOptions.map(({ key, icon }) => (
-                                <SidebarMenuItem key={key} className={cn(" bg-blue-300/50 rounded-md", defenseFilter === key ? "bg-blue-500 text-white" : '')} onClick={() => defenseFilter$.set(defenseFilter === key ? null : key as typeof defenseFilter)}>
-                                    <SidebarMenuButton className="hover:cursor-pointer">
-                                    {icon}
-                                    <span>{key}</span>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                ))}
-                            </SidebarMenu>
-                        </SidebarGroupContent>
-                    </CollapsibleContent>
+                    <div ref={parentDef}>
+                      {isDefOpen && (
+                        <CollapsibleContent>
+                            <SidebarGroupContent>
+                                <SidebarMenu className="grid grid-cols-2">
+                                    {defenseOptions.map(({ key, icon }) => (
+                                    <SidebarMenuItem key={key} className={cn(" bg-blue-300/50 rounded-md", defenseFilter === key ? "bg-blue-500 text-white" : '')} onClick={() => defenseFilter$.set(defenseFilter === key ? null : key as typeof defenseFilter)}>
+                                        <SidebarMenuButton className="hover:cursor-pointer">
+                                        {icon}
+                                        <span>{key}</span>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                    ))}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </CollapsibleContent>
+                      )}
+                    </div>
                   </Collapsible>
              </SidebarGroup>
           </SidebarGroupContent>
@@ -112,19 +123,29 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
               <SidebarGroup>
-                  <SidebarGroupLabel  data-testid="rarity" className="font-fira">Rarity</SidebarGroupLabel>
-                      <SidebarGroupContent>
-                          <SidebarMenu className="grid grid-cols-2">
-                              {starOptions.map(({ key, icon }) => (
-                                <SidebarMenuItem key={key} className={cn(" bg-blue-300/50 rounded-md", String(starFilter) === key ? "bg-blue-500 text-white" : '')} onClick={() => starFilter$.set(starFilter === Number(key) ? null : Number(key) as 1 | 2 | 3)}>
-                                    <SidebarMenuButton className="flex justify-center items-center hover:cursor-pointer">
-                                      {icon}
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                )
-                              )}
-                          </SidebarMenu>
-                      </SidebarGroupContent>
+                <Collapsible open={isRarityOpen} onOpenChange={setIsRarityOpen}>
+                    <CollapsibleTrigger asChild className="hover:cursor-pointer">
+                      <SidebarGroupLabel  data-testid="rarity" className="font-fira flex justify-between">Rarity
+                        {!isRarityOpen ? <ArrowBigDownDashIcon/> : <ArrowBigUpDashIcon/>}
+                      </SidebarGroupLabel>
+                    </CollapsibleTrigger>
+                    <div ref={parentRarity}>
+                      {isRarityOpen && (
+                        <SidebarGroupContent>
+                            <SidebarMenu className="grid grid-cols-2">
+                                {starOptions.map(({ key, icon }) => (
+                                  <SidebarMenuItem key={key} className={cn(" bg-blue-300/50 rounded-md", String(starFilter) === key ? "bg-blue-500 text-white" : '')} onClick={() => starFilter$.set(starFilter === Number(key) ? null : Number(key) as 1 | 2 | 3)}>
+                                      <SidebarMenuButton className="flex justify-center items-center hover:cursor-pointer">
+                                        {icon}
+                                      </SidebarMenuButton>
+                                  </SidebarMenuItem>
+                                  )
+                                )}
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                      )}
+                    </div>
+                  </Collapsible>
              </SidebarGroup>
           </SidebarGroupContent>
         </SidebarGroup>
